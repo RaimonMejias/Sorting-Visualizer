@@ -46,21 +46,21 @@ bool SelectSort<Temp>::sort(SortingVector<Temp>& vector, sf::RenderWindow& windo
   for (int i{0}; i < vector.size(); i++) {
     int min = i;
     for (int j{i + 1}; j < vector.size(); j++) {
-      vector[min].set_color(sf::Color::Magenta);
+      vector.color(min, sf::Color::Magenta);
       window.clear();
-      vector[j].set_color(sf::Color::Red);
+      vector.color(j, sf::Color::Red);
       if (vector[j] <= vector[min]) { 
-        vector[min].reset_color();
+        vector.clear(min);
         min = j; 
       }
       vector.render(window);
       window.display();
-      vector[j].reset_color();
+      vector.clear(j);
     }
-    vector[min].reset_color();
+    vector.clear(min);
     if (min != i) {
       vector.swap(vector[min], vector[i]);
-      vector[i].reset_color();
+      vector.clear(i);
     } 
   }
   return true;

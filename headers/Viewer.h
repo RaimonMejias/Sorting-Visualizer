@@ -15,10 +15,13 @@ public:
   bool is_done() const;
   std::string name() const;
   std::string info() const;
+  void set_sort(int index);
 
   bool sort(sf::RenderWindow& window);
   void shuffle(sf::RenderWindow& window);
   void check(sf::RenderWindow& window);
+
+  void clear();
 
   void render(sf::RenderWindow& window);
 

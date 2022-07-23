@@ -2,6 +2,33 @@
 
 Viewer::Viewer(int size, bool info, int sort) {
   vector_ = SortingVector<int>{size};
+  set_sort(sort);
+}
+
+Viewer::~Viewer() {
+  if (debug_) { delete debug_; }
+  if (sort_)  { delete sort_;  }
+}
+
+bool Viewer::is_done() const {
+  return done_;
+}
+
+std::string Viewer::name() const {
+  if (sort_) {
+    return sort_ -> name();
+  }
+  return "---------";
+}
+
+std::string Viewer::info() const {
+  if (sort_) {
+    return sort_ -> info();
+  }
+  return "No Info";
+}
+
+void Viewer::set_sort(int sort) {
   switch(sort) {
     case 0:
       sort_ = new SelectSort<int>();
@@ -37,30 +64,7 @@ Viewer::Viewer(int size, bool info, int sort) {
       
     default:
       sort_ = new SelectSort<int>();
-  }
-}
-
-Viewer::~Viewer() {
-  if (debug_) { delete debug_; }
-  if (sort_)  { delete sort_;  }
-}
-
-bool Viewer::is_done() const {
-  return done_;
-}
-
-std::string Viewer::name() const {
-  if (sort_) {
-    return sort_ -> name();
-  }
-  return "---------";
-}
-
-std::string Viewer::info() const {
-  if (sort_) {
-    return sort_ -> info();
-  }
-  return "No Info";
+  }  
 }
 
 bool Viewer::sort(sf::RenderWindow& window) {
@@ -73,13 +77,20 @@ bool Viewer::sort(sf::RenderWindow& window) {
 
 void Viewer::shuffle(sf::RenderWindow& window) {
   vector_.shuffle(window);
+  done_ = false;
 }
 
 void Viewer::check(sf::RenderWindow& window) {
   vector_.check(window);
 }
 
+void Viewer::clear() {
+  for (int i{0}; i < vector_.size(); i++) {
+    vector_.clear(i);
+  }
+}
 
 void Viewer::render(sf::RenderWindow& window) {
   vector_.render(window);
 }
+

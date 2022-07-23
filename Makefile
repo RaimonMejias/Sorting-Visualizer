@@ -1,4 +1,4 @@
-TARGET = Sorts.exe
+TARGET = Viewer.exe
 INCLUDE = C:\SFML-2.5.1\include 
 HEADERS = .\headers
 LINK = C:\SFML-2.5.1\lib

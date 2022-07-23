@@ -19,9 +19,7 @@ public:
   Temp item();
   int comp() const;
 
-  void set_color(const sf::Color& color);
-  void reset_color();
-  void debug();
+  void color(const sf::Color& color);
 
   //Render y Updates
   void render(sf::RenderWindow& window, sf::Vector2f pos);
@@ -76,13 +74,8 @@ int Item<Temp>::comp() const {
 }
 
 template<class Temp>
-void Item<Temp>::set_color(const sf::Color& color) {
+void Item<Temp>::color(const sf::Color& color) {
   rect_.setFillColor(color);
-}
-
-template<class Temp>
-void Item<Temp>::reset_color() {
-  rect_.setFillColor(sf::Color::White);
 }
 
 template<class Temp>

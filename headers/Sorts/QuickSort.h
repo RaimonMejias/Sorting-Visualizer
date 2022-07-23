@@ -53,34 +53,34 @@ template<class Temp>
 void QuickSort<Temp>::quicksort(SortingVector<Temp>& vector, sf::RenderWindow& window, int ini, int fin) {
   int i = ini, j = fin;
   Item<Temp> pivot = vector[(i + j) / 2];
-  vector[(i + j) / 2].set_color(sf::Color::Magenta);
+  vector.color((i + j) / 2, sf::Color::Magenta);
   while (i <= j) {
     while (vector[i] < pivot) {
       window.clear();
-      vector[i].set_color(sf::Color::Red);
+      vector.color(i, sf::Color::Red);
       vector.render(window);
       window.display();
-      vector[i].set_color(sf::Color{254, 71, 71});
+      vector.color(i, sf::Color{254, 71, 71});
       i++;
     }
     while (vector[j] > pivot) {
       window.clear();
-      vector[j].set_color(sf::Color::Blue);
+      vector.color(j, sf::Color::Blue);
       vector.render(window);
       window.display();
-      vector[j].set_color(sf::Color{91, 91, 254});
+      vector.color(j, sf::Color{91, 91, 254});
       j--;
     }
     if (i <= j) {
       vector.swap(vector[i], vector[j]);
-      vector[i].set_color(sf::Color{254, 71, 71});
-      vector[j].set_color(sf::Color{91, 91, 254});
+      vector.color(i, sf::Color{254, 71, 71});
+      vector.color(j, sf::Color{91, 91, 254});
       i++;
       j--;
     } 
   }
   for (int i{0}; i < vector.size(); i++) {
-    vector[i].reset_color();
+    vector.clear(i);
   }
   if (ini < j) { quicksort(vector, window, ini, j); }
   if (i < fin) { quicksort(vector, window, i, fin); }  

@@ -45,19 +45,20 @@ template <class Temp>
 bool InsertSort<Temp>::sort(SortingVector<Temp>& vector, sf::RenderWindow& window) { 
   for (int i{1}; i < vector.size(); i++) {
     Item<Temp> key = vector[i];
-    vector[i + 1].set_color(sf::Color::Magenta);
+    vector.color(i + 1, sf::Color::Magenta);
     int j = i; 
     while (key < vector[j - 1] && (j > 0) ) { 
       window.clear();
-      vector[j - 1].set_color(sf::Color::Red);
+      vector.color(j - 1, sf::Color::Red);
       vector[j] = vector[j - 1];
       j--;
       vector.render(window);
       window.display();
-      vector[j].reset_color();
+      vector.clear(j);
     }
     vector[j] = key;
-    vector[i + 1].reset_color();
+    vector.clear(i + 1);
+
   }
   return true;
 }

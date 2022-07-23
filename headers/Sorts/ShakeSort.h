@@ -47,26 +47,26 @@ bool ShakeSort<Temp>::sort(SortingVector<Temp>& vector, sf::RenderWindow& window
   while (ini < fin) {
     for (int i{ini}; i <= fin; i++) {
       window.clear();
-      vector[i].set_color(sf::Color::Red);
+      vector.color(i, sf::Color::Red);
       if (vector[i] <= vector[i - 1]) {
         vector.swap(vector[i - 1], vector[i]);
         cam = i;
       }
       vector.render(window);
       window.display();
-      vector[i].reset_color();
+      vector.clear(i);
     }
     fin = cam -1;
     for(int i{fin}; i >= ini; i--) {
       window.clear();
-      vector[i].set_color(sf::Color::Red);
+      vector.color(i, sf::Color::Red);
       if (vector[i] <= vector[i - 1]) {
         vector.swap(vector[i - 1], vector[i]);
         cam = i;
       }
       vector.render(window);
       window.display();
-      vector[i].reset_color();
+      vector.clear(i);
     }
     ini = cam + 1;
   }

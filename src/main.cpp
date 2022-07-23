@@ -7,8 +7,7 @@ int main() {
   sf::RenderWindow window{sf::VideoMode{1280, 720}, "Visualizador"};
   window.setFramerateLimit(60);
 
-  Viewer view{128, 0, 7};
-  view.shuffle(window);
+  Viewer view{25, 0, 0};
   bool once = true;
 
   while (window.isOpen()) {
@@ -22,12 +21,14 @@ int main() {
 
     }
     
-    if (!view.is_done()) {
-      view.sort(window);
-    }
-
     if (once) {
-      view.check(window);
+      for (int i{0}; i < 8; i++) {
+        view.shuffle(window);
+        view.set_sort(i);
+        view.sort(window);
+        view.check(window);
+        view.clear();
+      }
       once = false;
     }
 

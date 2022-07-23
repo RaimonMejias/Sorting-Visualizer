@@ -27,6 +27,8 @@ public:
   void shuffle(sf::RenderWindow& window);
   bool check(sf::RenderWindow& window);
   void swap(Item<Temp>& item1, Item<Temp>& item2);
+  void color(int index, const sf::Color& colour);
+  void clear(int index);
 
   //Render y Update
   void render(sf::RenderWindow& window);
@@ -77,7 +79,7 @@ int SortingVector<Temp>::access() const {
 template<class Temp>
 void SortingVector<Temp>::shuffle(sf::RenderWindow& window) {
   srand(time(NULL));
-  for (int i{0}; i < size(); i++) {
+  for (int i{0}; i < size() * 2; i++) {
     window.clear();
     swap(vector_[rand() % (vector_.size() - 1)], vector_[rand() % (vector_.size() - 1)]);
     render(window);
@@ -90,11 +92,11 @@ bool SortingVector<Temp>::check(sf::RenderWindow& window) {
   for(int i{0}; i < size(); i++) {  
     window.clear();
     if (this -> operator[](i) <= this -> operator[](i + 1)) {
-      this -> operator[](i).set_color(sf::Color::Green);
-      this -> operator[](i + 1).set_color(sf::Color::Red);
+      color(i, sf::Color::Green);
+      color(i + 1, sf::Color::Red);
     }
     if (i == size() - 1) {
-      this -> operator[](i).set_color(sf::Color::Green);
+      color(i, sf::Color::Green);
     }   
     render(window);
     window.display();
@@ -108,6 +110,19 @@ void SortingVector<Temp>::swap(Item<Temp>& item1, Item<Temp>& item2) {
   item1 = item2;
   item2 = aux;
 }
+
+template<class Temp>
+void SortingVector<Temp>::color(int index, const sf::Color& colour) {
+  if (index < 0 || index >= size()) { return; }
+  vector_[index].color(colour);
+}
+
+template<class Temp>
+void SortingVector<Temp>::clear(int index) {
+  if (index < 0 || index >= size()) { return; }
+  vector_[index].color(sf::Color::White);
+}
+
 
 template<class Temp>
 void SortingVector<Temp>::render(sf::RenderWindow& window) {

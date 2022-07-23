@@ -62,9 +62,10 @@ void MergeSort<Temp>::Mergesort(SortingVector<Temp>& vector, sf::RenderWindow& w
 template<class Temp>
 void mix(SortingVector<Temp>& vector, sf::RenderWindow& window, int ini, int med, int fin) {
   int i = ini, j = med + 1, k = ini;
-  vector[ini].set_color(sf::Color::Red);
-  vector[fin].set_color(sf::Color::Blue);
+  vector.color(ini, sf::Color::Red);
+  vector.color(fin, sf::Color::Blue);
   SortingVector<Temp> aux{vector.size()};
+
   while ((i <= med) && (j <= fin)) {
     window.clear();
     if (vector[i] < vector[j]) {
@@ -95,10 +96,10 @@ void mix(SortingVector<Temp>& vector, sf::RenderWindow& window, int ini, int med
   for (int l{ini}; l <= fin; l++) {
     window.clear();
     vector[l] = aux[l];  
-    vector[l].set_color(sf::Color::Magenta);
+    vector.color(l, sf::Color::Magenta);
     vector.render(window);
     window.display();
-    vector[l].reset_color();
+    vector.clear(l);
   }
 }
 

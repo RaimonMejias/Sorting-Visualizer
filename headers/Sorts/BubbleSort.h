@@ -21,7 +21,6 @@ public:
 
 };
 
-
 template<class Temp>
 BubbleSort<Temp>::BubbleSort() {
 
@@ -47,13 +46,13 @@ bool BubbleSort<Temp>::sort(SortingVector<Temp>& vector, sf::RenderWindow& windo
   for (int i{1}; i < vector.size(); i++) {
     for (int j{vector.size() - 1}; j >= i; j--) {
       window.clear();
-      vector[j].set_color(sf::Color::Red);
+      vector.color(j, sf::Color::Red);
       if (vector[j] < vector[j-1]) {
         vector.swap(vector[j-1], vector[j]);
       }
       vector.render(window);
       window.display();
-      vector[j].reset_color();
+      vector.clear(j);
     }
   }
   return true;
