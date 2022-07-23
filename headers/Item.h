@@ -17,32 +17,28 @@ public:
   //Getters y Setters
   const Temp& item() const;
   Temp item();
-  int cmp() const;
+  int comp() const;
 
-  sf::Vector2f size() const;
-  sf::Vector2f pos() const;
   void set_color(const sf::Color& color);
   void reset_color();
   void debug();
 
   //Render y Updates
-  void render(sf::RenderWindow& window);
-  void update();
+  void render(sf::RenderWindow& window, sf::Vector2f pos);
 
   //Operadores
-  void operator=(Item<Temp>& item);
-  bool operator> (const  Item<Temp>& item) const;
-  bool operator< (const Item<Temp>& item) const;
-  bool operator>=(const Item<Temp>& item) const;
-  bool operator<=(const Item<Temp>& item) const;
-  bool operator==(const Item<Temp>& item) const;
-  bool operator!=(const Item<Temp>& item) const;
+  void operator= (const Item<Temp>& item);
+  bool operator> (Item<Temp>& item); 
+  bool operator< (Item<Temp>& item); 
+  bool operator>=(Item<Temp>& item); 
+  bool operator<=(Item<Temp>& item); 
+  bool operator==(Item<Temp>& item); 
+  bool operator!=(Item<Temp>& item); 
 
 private:
 
   sf::RectangleShape rect_;
   Temp item_;
-  sf::Vector2f size_;
   sf::Vector2f pos_;
 
   int comp_;
@@ -51,19 +47,13 @@ private:
 
 template<class Temp>
 Item<Temp>::Item() {
-  size_ = {0, 0};
-  pos_ = {0, 0};
   comp_ = 0;
-  update();
 }
 
 template<class Temp>
 Item<Temp>::Item(const Temp& item, sf::Vector2f pos) {
   item_ = item;
-  pos_ = pos;
   comp_ = 0;
-  size_ = sf::Vector2f{10, (-1.0f * item_)};
-  update();
 }
 
 template<class Temp>
@@ -81,18 +71,8 @@ Temp Item<Temp>::item() {
 }
 
 template<class Temp>
-int Item<Temp>::cmp() const {
+int Item<Temp>::comp() const {
   return comp_;
-}
-
-template<class Temp>
-sf::Vector2f Item<Temp>::size() const {
-  return size_;
-}
-
-template<class Temp>
-sf::Vector2f Item<Temp>::pos() const {
-  return pos_;
 }
 
 template<class Temp>
@@ -106,40 +86,23 @@ void Item<Temp>::reset_color() {
 }
 
 template<class Temp>
-void Item<Temp>::render(sf::RenderWindow& window) {
+void Item<Temp>::render(sf::RenderWindow& window, sf::Vector2f pos) {
+  rect_.setOutlineColor(sf::Color::Black);
+  rect_.setOutlineThickness(0.5);
+  rect_.setSize(sf::Vector2f{10, (-1.0f * item_)});
+  rect_.setPosition(pos);
   window.draw(rect_);
 }
 
-template<class Temp>
-void Item<Temp>::update() {
-  rect_.setOutlineColor(sf::Color::Black);
-  rect_.setOutlineThickness(0.5);
-  rect_.setSize(size_);
-  rect_.setPosition(pos_);
-}
-/*
-template<class Temp>
-void Item<Temp>::update(sf::Vector2f pos) {
-  item_ = item_;
-  size_ = sf::Vector2f{10, (-1.0f * item_)};
-  pos_ = pos;
-  rect_.setSize(size_);
-  rect_.setPosition(pos_);
-}
-*/
-
 //Operadores 
 template<class Temp>
-void Item<Temp>::operator=(Item<Temp>& item) {
+void Item<Temp>::operator=(const Item<Temp>& item) {
   item_ = item.item();
-  size_ = item.size();
-  pos_ = item.pos();
-  comp_ = item.cmp();
-  update();
+  comp_ = item.comp();
 }
 
 template<class Temp>
-bool Item<Temp>::operator>(const Item<Temp>& item) const {
+bool Item<Temp>::operator>(Item<Temp>& item)  {
   comp_++;
   if (this -> item() > item.item()) {
     return true;
@@ -148,7 +111,7 @@ bool Item<Temp>::operator>(const Item<Temp>& item) const {
 }
 
 template<class Temp>
-bool Item<Temp>::operator<(const Item<Temp>& item) const {
+bool Item<Temp>::operator<(Item<Temp>& item)  {
   comp_++;
   if (this -> item() < item.item()) {
     return true;
@@ -157,7 +120,7 @@ bool Item<Temp>::operator<(const Item<Temp>& item) const {
 }
 
 template<class Temp>
-bool Item<Temp>::operator>=(const Item<Temp>& item) const {
+bool Item<Temp>::operator>=(Item<Temp>& item)  {
   comp_++;
   if (this -> item() >= item.item()) {
     return true;
@@ -166,7 +129,7 @@ bool Item<Temp>::operator>=(const Item<Temp>& item) const {
 }
 
 template<class Temp>
-bool Item<Temp>::operator<=(const Item<Temp>& item) const {
+bool Item<Temp>::operator<=(Item<Temp>& item)  {
   comp_++;
   if (this -> item() <= item.item()) {
     return true;
@@ -175,7 +138,7 @@ bool Item<Temp>::operator<=(const Item<Temp>& item) const {
 }
 
 template<class Temp>
-bool Item<Temp>::operator==(const Item<Temp>& item) const {
+bool Item<Temp>::operator==(Item<Temp>& item)  {
   comp_++;
   if (this -> item() == item.item()) {
     return true;
@@ -185,7 +148,7 @@ bool Item<Temp>::operator==(const Item<Temp>& item) const {
 }
 
 template<class Temp>
-bool Item<Temp>::operator!=(const Item<Temp>& item) const {
+bool Item<Temp>::operator!=(Item<Temp>& item)  {
   comp_++;
   if (this -> item() > item.item()) {
     return true;

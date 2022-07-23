@@ -1,20 +1,16 @@
 #include <iostream>
-#include "SelectSort.h"
-#include "InsertSort.h"
-#include "BubbleSort.h"
-#include "ShakeSort.h"
-#include "QuickSort.h"
-#include "SortingVector.h"
+
+#include "Viewer.h"
 
 int main() {
 
   sf::RenderWindow window{sf::VideoMode{1280, 720}, "Visualizador"};
   window.setFramerateLimit(60);
 
-  SortFunct<int>* funct= new QuickSort<int>();
-  Debug* debug = new Debug();
-  SortingVector<int> vector{128, funct, debug};
-  vector.unsort();
+  Viewer view{128, 0, 7};
+  view.shuffle(window);
+  bool once = true;
+
   while (window.isOpen()) {
     sf::Event event;
 
@@ -22,20 +18,23 @@ int main() {
 
       if (event.type == sf::Event::Closed)                  { window.close();  }
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) { window.close();  }
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))  { vector.update(); }
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))  { /*vector.update();*/ }
 
     }
-/*
-    if (!vector.is_done()) {
-      vector.update();
+    
+    if (!view.is_done()) {
+      view.sort(window);
+    }
+
+    if (once) {
+      view.check(window);
+      once = false;
     }
 
     window.clear();
-    vector.render(window);
+    view.render(window);
     window.display();
-*/
 
   }
-
   return 0;
 }
