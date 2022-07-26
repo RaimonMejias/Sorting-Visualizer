@@ -22,13 +22,16 @@ public:
   int size() const;
   int comp() const;
   int access() const;
+  void reset_counters();
 
   //Metodos
-  void shuffle(sf::RenderWindow& window);
-  bool check(sf::RenderWindow& window);
+  void shuffle();
+  bool check();
   void swap(Item<Temp>& item1, Item<Temp>& item2);
+
   void color(int index, const sf::Color& colour);
   void clear(int index);
+  void bleach();
 
   //Render y Update
   void render(sf::RenderWindow& window);
@@ -77,29 +80,34 @@ int SortingVector<Temp>::access() const {
 }
 
 template<class Temp>
-void SortingVector<Temp>::shuffle(sf::RenderWindow& window) {
-  srand(time(NULL));
-  for (int i{0}; i < size() * 2; i++) {
-    window.clear();
-    swap(vector_[rand() % (vector_.size() - 1)], vector_[rand() % (vector_.size() - 1)]);
-    render(window);
-    window.display();
+void SortingVector<Temp>::reset_counters() {
+  for (int i{0}; i < size(); i++) {
+    vector_[i].reset_counter();
   }
+  access_ = 0;
 }
 
 template<class Temp>
-bool SortingVector<Temp>::check(sf::RenderWindow& window) {
+void SortingVector<Temp>::shuffle() {
+  srand(time(NULL));
+  for (int i{0}; i < size() * 2; i++) {
+    swap(vector_[rand() % (vector_.size() - 1)], vector_[rand() % (vector_.size() - 1)]);
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+  }
+  
+}
+
+template<class Temp>
+bool SortingVector<Temp>::check() {
   for(int i{0}; i < size(); i++) {  
-    window.clear();
     if (this -> operator[](i) <= this -> operator[](i + 1)) {
       color(i, sf::Color::Green);
       color(i + 1, sf::Color::Red);
     }
     if (i == size() - 1) {
       color(i, sf::Color::Green);
-    }   
-    render(window);
-    window.display();
+    }
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
   }
   return true;
 }
@@ -123,6 +131,12 @@ void SortingVector<Temp>::clear(int index) {
   vector_[index].color(sf::Color::White);
 }
 
+template<class Temp>
+void SortingVector<Temp>::bleach() {
+  for (int i{0}; i < size(); i++) {
+    vector_[i].color(sf::Color::White);
+  }
+}
 
 template<class Temp>
 void SortingVector<Temp>::render(sf::RenderWindow& window) {
@@ -135,12 +149,15 @@ template<class Temp>
 Item<Temp>& SortingVector<Temp>::operator[](int i) {
   if (i < 0 || i >= size()) { return vector_[0]; }
   access_++;
+  std::this_thread::sleep_for(std::chrono::microseconds(2000));
   return vector_[i];
 }
 
 template<class Temp>
 const Item<Temp>& SortingVector<Temp>::operator[](int i) const {
   if (i < 0 || i >= size()) { throw vector_[0]; }
+  std::this_thread::sleep_for(std::chrono::microseconds(2000));
   return vector_[i];
 }
+
 #endif

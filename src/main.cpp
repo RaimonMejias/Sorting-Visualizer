@@ -1,35 +1,24 @@
 #include <iostream>
 
 #include "Viewer.h"
+#include "Externals\RichText-master\RichText.hpp"
 
 int main() {
 
   sf::RenderWindow window{sf::VideoMode{1280, 720}, "Visualizador"};
+  sf::Event event;
   window.setFramerateLimit(60);
 
-  Viewer view{25, 0, 0};
-  bool once = true;
+  Viewer view{128, 0};
 
   while (window.isOpen()) {
-    sf::Event event;
-
+    
     while (window.pollEvent(event)) {
 
       if (event.type == sf::Event::Closed)                  { window.close();  }
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) { window.close();  }
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))  { /*vector.update();*/ }
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))  { view.start();    }
 
-    }
-    
-    if (once) {
-      for (int i{0}; i < 8; i++) {
-        view.shuffle(window);
-        view.set_sort(i);
-        view.sort(window);
-        view.check(window);
-        view.clear();
-      }
-      once = false;
     }
 
     window.clear();

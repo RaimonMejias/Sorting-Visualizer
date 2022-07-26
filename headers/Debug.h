@@ -6,6 +6,11 @@
 #include <iostream>
 #include <sstream>
 
+#include "Info.h"
+#include "Fonts.h"
+
+struct viewer_status;
+
 class Debug {
 
 public:
@@ -15,20 +20,20 @@ public:
   ~Debug();
 
   //Getters y Setters
-  void string(std::string buff);
+  void print(int cmps, int access, const Info<int>& info, const std::unique_ptr<viewer_status>& status);
 
   //Metodos
 
   //Render y Update
   void render(sf::RenderWindow& window);
-  void update();
 
   //Operadores
 
 private:
 
-  sf::Font font_;
+  Fonts font_;
   sf::Text text_;
+  sf::RectangleShape rect_;
 
 };
 

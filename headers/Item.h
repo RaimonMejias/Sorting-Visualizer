@@ -18,7 +18,7 @@ public:
   const Temp& item() const;
   Temp item();
   int comp() const;
-
+  void reset_counter();
   void color(const sf::Color& color);
 
   //Render y Updates
@@ -71,6 +71,11 @@ Temp Item<Temp>::item() {
 template<class Temp>
 int Item<Temp>::comp() const {
   return comp_;
+}
+
+template<class Temp>
+void Item<Temp>::reset_counter() {
+  comp_ = 0;
 }
 
 template<class Temp>

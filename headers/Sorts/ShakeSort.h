@@ -13,17 +13,23 @@ public:
   ~ShakeSort();
 
   //Getters y Setters 
-  std::string name() const override;
-  std::string info() const override;
+  const Info<int>& info() const override;
 
   //Metodos
-  bool sort(SortingVector<Temp>& vector, sf::RenderWindow& window) override;
+  bool sort(SortingVector<Temp>& vector) override;
+  
+private:
+
+  Info<int> info_;
 
 };
 
 template<class Temp>
 ShakeSort<Temp>::ShakeSort() {
-
+  info_ = Info<int>{"ShakeSort", 3};
+  info_.name_value(0, "INI");
+  info_.name_value(1, "FIN");
+  info_.name_value(2, "CAM");
 }
 
 template<class Temp>
@@ -32,40 +38,33 @@ ShakeSort<Temp>::~ShakeSort() {
 }
 
 template<class Temp>
-std::string ShakeSort<Temp>::name() const {
-  return "ShakeSort";
-}
-
-template<class Temp>
-std::string ShakeSort<Temp>::info() const {
-  return "ss.str()";
+const Info<int>& ShakeSort<Temp>::info() const {
+  return info_;
 }
 
 template <class Temp>
-bool ShakeSort<Temp>::sort(SortingVector<Temp>& vector, sf::RenderWindow& window) { // TODO ESTO POR NO PODER HACER UN BUCLE FOR 
+bool ShakeSort<Temp>::sort(SortingVector<Temp>& vector) { // TODO ESTO POR NO PODER HACER UN BUCLE FOR 
   int ini = 1, fin = vector.size() - 1, cam = vector.size();
   while (ini < fin) {
+    info_.set_value(0, ini);
+    info_.set_value(1, fin);
     for (int i{ini}; i <= fin; i++) {
-      window.clear();
       vector.color(i, sf::Color::Red);
       if (vector[i] <= vector[i - 1]) {
         vector.swap(vector[i - 1], vector[i]);
         cam = i;
+        info_.set_value(2, cam);
       }
-      vector.render(window);
-      window.display();
       vector.clear(i);
     }
     fin = cam -1;
     for(int i{fin}; i >= ini; i--) {
-      window.clear();
       vector.color(i, sf::Color::Red);
       if (vector[i] <= vector[i - 1]) {
         vector.swap(vector[i - 1], vector[i]);
         cam = i;
+        info_.set_value(2, cam);
       }
-      vector.render(window);
-      window.display();
       vector.clear(i);
     }
     ini = cam + 1;

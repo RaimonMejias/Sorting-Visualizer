@@ -13,17 +13,23 @@ public:
   ~SelectSort();
 
   //Getters y Setters
-  std::string name() const override;
-  std::string info() const override;
+  const Info<int>& info() const override;
 
   //Metodos
-  bool sort(SortingVector<Temp>& vector, sf::RenderWindow& window) override;
+  bool sort(SortingVector<Temp>& vector) override;
+
+private:
+
+  Info<int> info_;
 
 };
 
 template<class Temp>
 SelectSort<Temp>::SelectSort() {
-
+  info_ = Info<int>{"SelectSort", 3};
+  info_.name_value(0, "I");
+  info_.name_value(1, "J");
+  info_.name_value(2, "MIN");
 }
 
 template<class Temp>
@@ -32,29 +38,25 @@ SelectSort<Temp>::~SelectSort() {
 }
 
 template<class Temp>
-std::string SelectSort<Temp>::name() const {
-  return "SelectSort";
-}
-
-template<class Temp>
-std::string SelectSort<Temp>::info() const {
-  return "En construcción";
+const Info<int>& SelectSort<Temp>::info() const {
+  return info_;
 }
 
 template <class Temp>
-bool SelectSort<Temp>::sort(SortingVector<Temp>& vector, sf::RenderWindow& window) { ///SIIIIIIIIIIIIUUUUUUUUUUUUUU
+bool SelectSort<Temp>::sort(SortingVector<Temp>& vector) { ///SIIIIIIIIIIIIUUUUUUUUUUUUUU
   for (int i{0}; i < vector.size(); i++) {
     int min = i;
+    info_.set_value(0, i);
+    info_.set_value(2, (int)vector[min].item());
     for (int j{i + 1}; j < vector.size(); j++) {
+      info_.set_value(1, j);
       vector.color(min, sf::Color::Magenta);
-      window.clear();
       vector.color(j, sf::Color::Red);
       if (vector[j] <= vector[min]) { 
         vector.clear(min);
         min = j; 
+        info_.set_value(2, (int)vector[min].item());
       }
-      vector.render(window);
-      window.display();
       vector.clear(j);
     }
     vector.clear(min);
