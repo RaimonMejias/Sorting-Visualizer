@@ -1,3 +1,9 @@
+/*!
+ * @file QuickSort.h
+ * @brief Clase que contiene la declaración e implementación de QuickSort
+ * @date 28/07/2022
+ * @author Raimon Mejías Hernández<alu0101390161@ull.edu.es>
+*/
 #ifndef QUICKSORT_H
 #define QUICKSORT_H
 
@@ -17,17 +23,17 @@ public:
   const Info<int>& info() const override;
 
   //Metodos
-  bool sort(SortingVector<Temp>& vector) override;
+  bool sort(SortingVector<Temp>& vector, std::unique_ptr<viewer_status>& status) override;
 
 private:
 
-  void quicksort(SortingVector<Temp>& vector, int ini, int fin);
+  void quicksort(SortingVector<Temp>& vector, int ini, int fin, std::unique_ptr<viewer_status>& status);
 
   Info<int> info_;
-  
+   
 };
 
-
+/***************************************************************  Constructores y Destructor  ***************************************************************/
 template<class Temp>
 QuickSort<Temp>::QuickSort() {
   info_ = Info<int>{"QuickSort", 3};
@@ -41,19 +47,21 @@ QuickSort<Temp>::~QuickSort() {
 
 }
 
+/***************************************************************  Getters y Setters  ***************************************************************/
 template<class Temp>
 const Info<int>& QuickSort<Temp>::info() const {
   return info_;
 }
 
+/***************************************************************  Metodos  ***************************************************************/
 template <class Temp>
-bool QuickSort<Temp>::sort(SortingVector<Temp>& vector) { 
-  quicksort(vector, 0, vector.size()- 1);
+bool QuickSort<Temp>::sort(SortingVector<Temp>& vector, std::unique_ptr<viewer_status>& status) { 
+  quicksort(vector, 0, vector.size()- 1, status);
   return true;
 }
 
 template<class Temp>
-void QuickSort<Temp>::quicksort(SortingVector<Temp>& vector, int ini, int fin) {
+void QuickSort<Temp>::quicksort(SortingVector<Temp>& vector, int ini, int fin, std::unique_ptr<viewer_status>& status) {
   int i = ini, j = fin;
   info_.set_value(0, ini);
   info_.set_value(1, fin);
@@ -62,11 +70,13 @@ void QuickSort<Temp>::quicksort(SortingVector<Temp>& vector, int ini, int fin) {
   vector.color((i + j) / 2, sf::Color::Magenta);
   while (i <= j) {
     while (vector[i] < pivot) {
+      if (this -> control(status)) { return; }
       vector.color(i, sf::Color::Red);
       vector.color(i, sf::Color{254, 71, 71});
       i++;
     }
     while (vector[j] > pivot) {
+      if (this -> control(status)) { return; }
       vector.color(j, sf::Color::Blue);
       vector.color(j, sf::Color{91, 91, 254});
       j--;
@@ -79,11 +89,9 @@ void QuickSort<Temp>::quicksort(SortingVector<Temp>& vector, int ini, int fin) {
       j--;
     } 
   }
-  for (int i{0}; i < vector.size(); i++) {
-    vector.clear(i);
-  }
-  if (ini < j) { quicksort(vector, ini, j); }
-  if (i < fin) { quicksort(vector, i, fin); }  
+  vector.bleach();
+  if (ini < j) { quicksort(vector, ini, j, status); }
+  if (i < fin) { quicksort(vector, i, fin, status); }  
 }
 
 #endif

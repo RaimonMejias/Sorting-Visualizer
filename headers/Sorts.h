@@ -1,3 +1,9 @@
+/*!
+ * @file Sorts.h
+ * @brief Recopilación los includes de todos los Sorts
+ * @date 28/07/2022
+ * @author Raimon Mejías Hernández<alu0101390161@ull.edu.es>
+*/
 #ifndef SORTS_H
 #define SORTS_H
 

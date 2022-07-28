@@ -1,52 +1,48 @@
+/*!
+ * @file Viewer.h
+ * @brief Contiene la declaración de la clase Viewer.h 
+ * @date 28/07/2022
+ * @author Raimon Mejías Hernández<alu0101390161@ull.edu.es>
+*/
 #ifndef VIEWER_H
 #define VIEWER_H
 
 #include <thread>
-#include <atomic> 
 
 #include "SortingVector.h"
 #include "Sorts.h"
 #include "Debug.h"
 #include "Utils.h"
-
-struct viewer_status {
-
-  viewer_status(): QUIT{false}, SORTING{false}, CHECKING{false}, SORTED{true}, PAUSED{false} {} 
-  std::atomic<bool> QUIT;     //Flag para indicarle al hilo que debe parar;
-  std::atomic<bool> SORTING;  //Flag para indicar si esta ordenando o desordenando;
-  std::atomic<bool> CHECKING; //Flag para indicar si se esta comprobando;
-  std::atomic<bool> SORTED;   //Flag para indicar que la lista esta ordenada;
-  std::atomic<bool> PAUSED;   //Flag para indicar que esta en pausa el programa;
-
-  void shuffling();
-  void sorting();
-  bool checkable();
-  void checked();
-
-};
+#include "Status.h"
+#include "Button.h"
 
 class Viewer {
 
 public:
 
   //Constructores y Destructor
-  Viewer(int size, int sort);
+  Viewer(int size);
   ~Viewer();
 
   //Getters y Setters 
-  bool is_done() const;
+  
   void reset_counters();
-
-  //Metodos del Hilo
-  void start();
-  void stop();
-  void work();
+  void clear();
 
   //Metodos
   void sort();
   void shuffle();
   void check();
-  void clear();
+  
+  //Metodos del Hilo
+  void thread_start();
+  void thread_abort();
+  void thread_work();
+
+  //Botones
+  void is_over(sf::RenderWindow& window);
+  int is_pressed(sf::RenderWindow& window);
+  void action(int index);
 
   //Render y Updates
   void render(sf::RenderWindow& window);
@@ -54,11 +50,13 @@ public:
 private:  
 
   Debug* debug_;
+  std::vector<Button> toolbar_;
   SortingVector<int> vector_;
   SortFunct<int>* sort_;
 
   std::unique_ptr<viewer_status> status_;
   std::thread sorting_thread;
+  int state_;
 
 };
 

@@ -1,3 +1,9 @@
+/*!
+ * @file Utils.h
+ * @brief Contiene la declaración y la implementación de funciones utiles
+ * @date 28/07/2022
+ * @author Raimon Mejías Hernández<alu0101390161@ull.edu.es>
+*/
 #ifndef UTILS_H
 #define UTILS_H
 
@@ -6,37 +12,26 @@
 template<class Temp>
 SortFunct<Temp>* set_sort(int sort) {
 
-  SortFunct<Temp>* funct;
-
   switch(sort) {
     case 0:
-      funct = new SelectSort<Temp>();
-      break;
+      return new SelectSort<Temp>();
     case 1:
-      funct = new InsertSort<Temp>();
-      break;
+      return new InsertSort<Temp>();
     case 2:
-      funct = new BubbleSort<Temp>();
-      break;
+      return new BubbleSort<Temp>();
     case 3:
-      funct = new ShakeSort<Temp>();
-      break;
-    case 4:   
-      funct = new QuickSort<Temp>();
-      break;
+      return new ShakeSort<Temp>();
+    case 4:
+      return new QuickSort<Temp>();
     case 5:
-      funct = new MergeSort<Temp>();   
-      break;
+      return new MergeSort<Temp>();   
     case 6:
-      funct = new ShellSort<Temp>();
-      break;
+      return new ShellSort<Temp>();
     case 7:
-      funct = new RadixSort<Temp>();
-      break;
+      return new RadixSort<Temp>();
     default:
-      funct = new SelectSort<Temp>();
+      return nullptr;
   } 
-  return funct;   
 }
 
 #endif

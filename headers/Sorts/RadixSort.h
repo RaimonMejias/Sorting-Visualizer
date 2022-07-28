@@ -1,3 +1,9 @@
+/*!
+ * @file RadixSort.h
+ * @brief Clase que contiene la declaración e implementación de RadixSort
+ * @date 28/07/2022
+ * @author Raimon Mejías Hernández<alu0101390161@ull.edu.es>
+*/
 #ifndef RADIXSORT_H
 #define RADIXSORT_H
 
@@ -18,16 +24,15 @@ public:
   const Info<int>& info() const override;
 
   //Metodos
-  bool sort(SortingVector<Temp>& vector) override;
+  bool sort(SortingVector<Temp>& vector, std::unique_ptr<viewer_status>& status) override;
 
 private:
-
-  int max_value(SortingVector<Temp>& vector) ; 
 
   Info<int> info_;
 
 };
 
+/***************************************************************  Constructores y Destructor  ***************************************************************/
 template<class Temp>
 RadixSort<Temp>::RadixSort() {
   info_ = Info<int>{"RadixSort", 2};
@@ -40,14 +45,16 @@ RadixSort<Temp>::~RadixSort() {
 
 }
 
+/***************************************************************  Getters y Setters  ***************************************************************/
 template<class Temp>
 const Info<int>& RadixSort<Temp>::info() const {
   return info_;
 }
 
+/***************************************************************  Metodos  ***************************************************************/
 template <class Temp>
-bool RadixSort<Temp>::sort(SortingVector<Temp>& vector) { ///SIIIIIIIIIIIIUUUUUUUUUUUUUU
-  std::vector<std::queue<Item<Temp>>> stack_vector;
+bool RadixSort<Temp>::sort(SortingVector<Temp>& vector, std::unique_ptr<viewer_status>& status) { ///SIIIIIIIIIIIIUUUUUUUUUUUUUU
+  std::vector<std::queue<Item<Temp> > > stack_vector;
   stack_vector.resize(10);
   int radix = 1;
   int mod = 10;
@@ -55,12 +62,14 @@ bool RadixSort<Temp>::sort(SortingVector<Temp>& vector) { ///SIIIIIIIIIIIIUUUUUU
     info_.set_value(0, radix);
     info_.set_value(1, mod);
     for(int i{0}; i < vector.size(); i++) {
-      vector.color(i, SortFunct<Temp>::color((vector[i].item() % mod) / radix));
+      if (this -> control(status)) { return false; }
+      vector.color(i, this -> color((vector[i].item() % mod) / radix));
       stack_vector[(vector[i].item() % mod) / radix].push(vector[i]);
     }
     int counter = 0;
     for(unsigned int i{0}; i < stack_vector.size(); i++) {
       while(!stack_vector[i].empty()) {
+        if (this -> control(status)) { return false; }
         vector.color(counter, sf::Color::Red);
         vector[counter] = stack_vector[i].front();
         stack_vector[i].pop();
@@ -72,25 +81,6 @@ bool RadixSort<Temp>::sort(SortingVector<Temp>& vector) { ///SIIIIIIIIIIIIUUUUUU
     mod *= 10;
   }
   return true;
-}
-
-template<class Temp> //HAY ALGO MAL AQUI 
-int RadixSort<Temp>::max_value(SortingVector<Temp>& vector) { 
-  int max = 0;
-  for (int i{0}; i < vector.size(); i++) {
-    if (vector[max] < vector[i]) {
-      max = i;
-    }
-    vector.color(i, sf::Color::Yellow);
-    vector.clear(i);
-  }
-  int result;
-  Temp max_value = vector[max].item(); 
-  while (max_value != 0) {
-    max_value = max_value / 10;
-    result++;
-  }
-  return result;
 }
 
 #endif

@@ -1,3 +1,9 @@
+/*!
+ * @file Fonts.h
+ * @brief Clase auxiliar para simplificar el uso de sf::Font
+ * @date 28/07/2022
+ * @author Raimon Mejías Hernández<alu0101390161@ull.edu.es>
+*/
 #ifndef FONTS_H
 #define FONTS_H
 
@@ -18,7 +24,7 @@ public:
   bool is_loaded() const;
   std::string font() const;
 
-  //Prefabs de la clase. Pueden ir más Fonts predeterminadas
+  //Prefabs
   static const sf::Font Calibri; 
   static const sf::Font Arial;
   

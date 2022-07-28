@@ -1,8 +1,13 @@
+/*!
+ * @file Item.h
+ * @brief Clase plantilla para la creación de elementos para el SortingVector
+ * @date 28/07/2022
+ * @author Raimon Mejías Hernández<alu0101390161@ull.edu.es>
+*/
 #ifndef ITEM_H
 #define ITEM_H
 
 #include <SFML/Graphics.hpp>
-#include "Debug.h"
 
 template<class Temp>
 class Item {
@@ -36,13 +41,14 @@ public:
 private:
 
   sf::RectangleShape rect_;
-  Temp item_;
   sf::Vector2f pos_;
 
+  Temp item_;
   int comp_;
 
 };
 
+/***************************************************************  Constructores y Destructor  ***************************************************************/
 template<class Temp>
 Item<Temp>::Item() {
   comp_ = 0;
@@ -58,6 +64,7 @@ template<class Temp>
 Item<Temp>::~Item() {
 }
 
+/***************************************************************  Getters y Setters  ***************************************************************/
 template<class Temp>
 const Temp& Item<Temp>::item() const {
   return item_;
@@ -83,6 +90,7 @@ void Item<Temp>::color(const sf::Color& color) {
   rect_.setFillColor(color);
 }
 
+/***************************************************************  Renders y Updates  ***************************************************************/
 template<class Temp>
 void Item<Temp>::render(sf::RenderWindow& window, sf::Vector2f pos) {
   rect_.setOutlineColor(sf::Color::Black);
@@ -92,7 +100,7 @@ void Item<Temp>::render(sf::RenderWindow& window, sf::Vector2f pos) {
   window.draw(rect_);
 }
 
-//Operadores 
+/***************************************************************  Operadores  ***************************************************************/
 template<class Temp>
 void Item<Temp>::operator=(const Item<Temp>& item) {
   item_ = item.item();

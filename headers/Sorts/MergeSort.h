@@ -1,3 +1,9 @@
+/*!
+ * @file MergeSort.h
+ * @brief Clase que contiene la declaración e implementación de MergeSort
+ * @date 28/07/2022
+ * @author Raimon Mejías Hernández<alu0101390161@ull.edu.es>
+*/
 #ifndef MERGESORT_H
 #define MERGESORT_H
 
@@ -17,18 +23,18 @@ public:
   const Info<int>& info() const override;
 
   //Metodos
-  bool sort(SortingVector<Temp>& vector) override;
+  bool sort(SortingVector<Temp>& vector, std::unique_ptr<viewer_status>& status) override;
 
 private:
 
-  void Mergesort(SortingVector<Temp>& vector, int ini, int fin);
-  void mix(SortingVector<Temp>& vector, int ini, int med, int fin);
+  void mergesort(SortingVector<Temp>& vector, int ini, int fin, std::unique_ptr<viewer_status>& status);
+  void mix(SortingVector<Temp>& vector, int ini, int med, int fin, std::unique_ptr<viewer_status>& status);
 
   Info<int> info_;
   
 };
 
-
+/***************************************************************  Constructores y Destructor  ***************************************************************/
 template<class Temp>
 MergeSort<Temp>::MergeSort() {
   info_ = Info<int>{"MergeSort", 3};
@@ -42,29 +48,31 @@ MergeSort<Temp>::~MergeSort() {
 
 }
 
+/***************************************************************  Getters y Setters  ***************************************************************/
 template<class Temp>
 const Info<int>& MergeSort<Temp>::info() const {
   return info_;
 }
 
+/***************************************************************  Metodos  ***************************************************************/
 template <class Temp>
-bool MergeSort<Temp>::sort(SortingVector<Temp>& vector) { 
-  Mergesort(vector, 0, vector.size() - 1);
+bool MergeSort<Temp>::sort(SortingVector<Temp>& vector, std::unique_ptr<viewer_status>& status) { 
+  mergesort(vector, 0, vector.size() - 1, status);
   return true;
 }
 
 template<class Temp>
-void MergeSort<Temp>::Mergesort(SortingVector<Temp>& vector, int ini, int fin) {
+void MergeSort<Temp>::mergesort(SortingVector<Temp>& vector, int ini, int fin, std::unique_ptr<viewer_status>& status) {
   if (ini < fin) {
     int med = (ini + fin) / 2;
-    Mergesort(vector, ini, med);
-    Mergesort(vector, med + 1, fin);
-    mix(vector, ini, med, fin);
+    mergesort(vector, ini, med, status);
+    mergesort(vector, med + 1, fin, status);
+    mix(vector, ini, med, fin, status);
   } 
 }
 
 template<class Temp>
-void MergeSort<Temp>::mix(SortingVector<Temp>& vector, int ini, int med, int fin) {
+void MergeSort<Temp>::mix(SortingVector<Temp>& vector, int ini, int med, int fin, std::unique_ptr<viewer_status>& status) {
   info_.set_value(0, ini);
   info_.set_value(1, med);
   info_.set_value(2, fin);
@@ -74,6 +82,7 @@ void MergeSort<Temp>::mix(SortingVector<Temp>& vector, int ini, int med, int fin
   SortingVector<Temp> aux{vector.size()};
 
   while ((i <= med) && (j <= fin)) {
+    if (this -> control(status)) { return; }
     if (vector[i] < vector[j]) {
       aux[k] = vector[i];
       i++;
@@ -85,12 +94,14 @@ void MergeSort<Temp>::mix(SortingVector<Temp>& vector, int ini, int med, int fin
   } 
   if (i > med) {
     while (j <= fin) {
+      if (this -> control(status)) { return; }
       aux[k] = vector[j];
       j++;
       k++;
     }
   } else {
     while (i <= med) {
+      if (this -> control(status)) { return; }
       aux[k] = vector[i];
       i++;
       k++;
@@ -98,8 +109,9 @@ void MergeSort<Temp>::mix(SortingVector<Temp>& vector, int ini, int med, int fin
 
   }
   for (int l{ini}; l <= fin; l++) {
-    vector[l] = aux[l];  
     vector.color(l, sf::Color::Magenta);
+    if (this -> control(status)) { return; }
+    vector[l] = aux[l];  
     vector.clear(l);
   }
 }
