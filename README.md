@@ -1,4 +1,4 @@
-# Sort Viewer
+# Sorting Visualizer
 
 This program is a small test project for the purpose of learning the basics of SFML.
 
